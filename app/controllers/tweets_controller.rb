@@ -8,7 +8,18 @@ class TweetsController < ApplicationController
     @tweet = Tweet.new(tweet_params)
 
     if @tweet.save
-      redirect_to tweets_path
+      if request.xhr?
+        puts "AJAX BABY"
+        respond_to do |format|
+          puts 'XHR?'
+          format.html do
+            puts "html response"
+            render partial: "tweet-view", locals: {tweet: @tweet}
+          end
+        end
+      else
+        redirect_to tweets_path
+      end
     else
       render :index
     end
