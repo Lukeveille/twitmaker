@@ -17,9 +17,23 @@ document.addEventListener('DOMContentLoaded', function() {
       method: myForm.getAttribute('method'),
       data: formData,
     }).then(function(response) {
-      var div = document.createElement('div');
-      div.innerHTML = response.data;
-      tweets.insertBefore(div.firstChild, tweets.firstChild);
+      console.log(response.data);
+      let li = document.createElement('li'),
+      p = document.createElement('p'),
+      time = document.createElement('time');
+
+      li.setAttribute("class", "tweet")
+      p.innerHTML = response.data.message;
+      
+      const monthNames = ["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
+      dateTime = new Date(response.data.created_at);
+      dateString = monthNames[dateTime.getMonth()] + ' ' + dateTime.getDate() + ', ' + (dateTime.getHours() % 12) + ':' + dateTime.getMinutes() + (dateTime.getHours() > 12 ? ' PM' : ' AM');
+      time.innerHTML = dateString;
+      
+      li.append(p);
+      li.append(time);
+
+      tweets.insertBefore(li, tweets.firstChild);
       myForm.reset();
     });
   });

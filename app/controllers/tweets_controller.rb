@@ -16,6 +16,10 @@ class TweetsController < ApplicationController
             puts "html response"
             render partial: "tweet-view", locals: {tweet: @tweet}
           end
+          format.json do
+            puts 'json'
+            render json: @tweet
+          end
         end
       else
         redirect_to tweets_path
